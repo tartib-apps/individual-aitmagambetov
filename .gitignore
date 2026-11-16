@@ -12,3 +12,4 @@ APIs used
 .DS_Store
 .vscode/
 *.log
+.claude/
