@@ -1,0 +1,34 @@
+<%- include("partials/header.ejs") %>
+
+<section class="results-head">
+  <h1>All passenger-car makes</h1>
+  <p class="muted"><strong><%= total %></strong> makes in the NHTSA database. Click a make to see its <%= year %> models.</p>
+
+  <!-- Jump links A-Z -->
+  <nav class="letters" aria-label="Jump to letter">
+    <% groups.forEach((group) => { %>
+      <a href="#letter-<%= group.letter %>"><%= group.letter %></a>
+    <% }) %>
+  </nav>
+</section>
+
+<% if (groups.length === 0) { %>
+  <section class="card empty">
+    <p>The database returned no makes. Please try again later.</p>
+  </section>
+<% } %>
+
+<div class="letter-groups">
+  <% groups.forEach((group) => { %>
+    <section class="letter-group" id="letter-<%= group.letter %>">
+      <h2><%= group.letter %></h2>
+      <ul>
+        <% group.makes.forEach((make) => { %>
+          <li><a href="/models?make=<%= encodeURIComponent(make) %>&year=<%= year %>"><%= make %></a></li>
+        <% }) %>
+      </ul>
+    </section>
+  <% }) %>
+</div>
+
+<%- include("partials/footer.ejs") %>

@@ -1,0 +1,119 @@
+<%- include("partials/header.ejs") %>
+
+<section class="hero">
+  <p class="eyebrow">Before you rent or buy a car</p>
+  <h1>Check any car in seconds</h1>
+  <p class="lead">
+    Decode a VIN to see what the car really is - engine, body, safety equipment and where it was built.
+    Or look up which models a brand made in a given year.
+  </p>
+</section>
+
+<div class="grid-2">
+  <!-- Form 1: VIN decoder (POST) -->
+  <section class="card">
+    <h2>Decode a VIN</h2>
+    <p class="muted">The VIN is a 17-character code on the windshield, door frame or registration papers.</p>
+
+    <form action="/vin" method="POST" class="form" novalidate>
+      <label for="vin">Vehicle Identification Number (VIN)</label>
+      <input
+        type="text"
+        id="vin"
+        name="vin"
+        maxlength="25"
+        placeholder="e.g. 1HGCV1F34JA123456"
+        value="<%= values.vin || '' %>"
+        class="<%= errors.vin ? 'input-error' : '' %>"
+        autocomplete="off"
+        spellcheck="false">
+      <% if (errors.vin) { %>
+        <p class="field-error"><%= errors.vin %></p>
+      <% } else { %>
+        <p class="hint">17 letters and digits. The letters I, O and Q are never used.</p>
+      <% } %>
+      <button type="submit" class="btn">Decode VIN</button>
+    </form>
+
+    <div class="samples">
+      <span class="muted">Try an example:</span>
+      <% sampleVins.forEach((sample) => { %>
+        <a href="/vin/<%= sample.vin %>" class="chip"><%= sample.label %></a>
+      <% }) %>
+    </div>
+  </section>
+
+  <!-- Form 2: models by make and year (GET with query parameters) -->
+  <section class="card">
+    <h2>Find models by make &amp; year</h2>
+    <p class="muted">See every model a brand produced for a specific model year.</p>
+
+    <form action="/models" method="GET" class="form" novalidate>
+      <label for="make">Car make</label>
+      <input
+        type="text"
+        id="make"
+        name="make"
+        list="make-list"
+        placeholder="e.g. Toyota"
+        value="<%= values.make || '' %>"
+        class="<%= errors.make ? 'input-error' : '' %>">
+      <datalist id="make-list">
+        <% popularMakes.forEach((make) => { %>
+          <option value="<%= make %>">
+        <% }) %>
+      </datalist>
+      <% if (errors.make) { %>
+        <p class="field-error"><%= errors.make %></p>
+      <% } %>
+
+      <div class="row">
+        <div>
+          <label for="year">Model year</label>
+          <input
+            type="number"
+            id="year"
+            name="year"
+            min="<%= years.min %>"
+            max="<%= years.max %>"
+            placeholder="<%= years.max - 1 %>"
+            value="<%= values.year || '' %>"
+            class="<%= errors.year ? 'input-error' : '' %>">
+        </div>
+        <div>
+          <label for="filter">Filter by name <span class="optional">(optional)</span></label>
+          <input
+            type="text"
+            id="filter"
+            name="filter"
+            maxlength="30"
+            placeholder="e.g. cor"
+            value="<%= values.filter || '' %>"
+            class="<%= errors.filter ? 'input-error' : '' %>">
+        </div>
+      </div>
+      <% if (errors.year) { %>
+        <p class="field-error"><%= errors.year %></p>
+      <% } %>
+      <% if (errors.filter) { %>
+        <p class="field-error"><%= errors.filter %></p>
+      <% } %>
+      <% if (!errors.year && !errors.filter) { %>
+        <p class="hint">Years from <%= years.min %> to <%= years.max %>.</p>
+      <% } %>
+
+      <button type="submit" class="btn">Show models</button>
+    </form>
+  </section>
+</div>
+
+<section class="info">
+  <h2>How it works</h2>
+  <ol class="steps">
+    <li><strong>You enter</strong> a VIN or a make and year.</li>
+    <li><strong>Our server checks</strong> the input and asks the official NHTSA vehicle database.</li>
+    <li><strong>The answer is cleaned up</strong> - converted to metric units, grouped and sorted - and shown here.</li>
+  </ol>
+</section>
+
+<%- include("partials/footer.ejs") %>

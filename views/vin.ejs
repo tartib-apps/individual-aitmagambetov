@@ -1,0 +1,79 @@
+<%- include("partials/header.ejs") %>
+
+<a href="/" class="back">&larr; New search</a>
+
+<% if (!vehicle) { %>
+  <!-- "No results" state: the API answered but did not recognise the VIN -->
+  <section class="card empty">
+    <h1>We could not identify this VIN</h1>
+    <p class="mono"><%= vin %></p>
+    <p>The NHTSA database has no vehicle for this number. Please check it for typing mistakes.</p>
+    <% if (apiMessage) { %>
+      <p class="muted small">Database message: <%= apiMessage %></p>
+    <% } %>
+    <a href="/" class="btn">Try another VIN</a>
+  </section>
+<% } else { %>
+
+  <section class="vehicle-head">
+    <div>
+      <p class="eyebrow">VIN <span class="mono"><%= vehicle.vin %></span></p>
+      <h1><%= vehicle.title %></h1>
+    </div>
+    <div class="badges">
+      <span class="badge"><%= vehicle.ageLabel %></span>
+      <span class="badge <%= vehicle.safetyCount >= vehicle.safetyTotal / 2 ? 'badge-good' : 'badge-warn' %>">
+        Safety <%= vehicle.safetyCount %>/<%= vehicle.safetyTotal %>
+      </span>
+    </div>
+  </section>
+
+  <% if (vehicle.warnings.length > 0) { %>
+    <div class="alert">
+      <strong>Notes from the database:</strong>
+      <ul>
+        <% vehicle.warnings.forEach((warning) => { %>
+          <li><%= warning %></li>
+        <% }) %>
+      </ul>
+    </div>
+  <% } %>
+
+  <div class="grid-2">
+    <% vehicle.sections.forEach((section) => { %>
+      <section class="card">
+        <h2><%= section.title %></h2>
+        <dl class="specs">
+          <% section.items.forEach(([label, value]) => { %>
+            <dt><%= label %></dt>
+            <dd><%= value %></dd>
+          <% }) %>
+        </dl>
+      </section>
+    <% }) %>
+  </div>
+
+  <section class="card">
+    <h2>Safety equipment</h2>
+    <div class="meter" aria-label="<%= vehicle.safetyCount %> of <%= vehicle.safetyTotal %> safety features">
+      <div class="meter-fill" style="width: <%= Math.round(vehicle.safetyCount / vehicle.safetyTotal * 100) %>%"></div>
+    </div>
+    <ul class="features">
+      <% vehicle.safetyFeatures.forEach((feature) => { %>
+        <li class="<%= feature.present ? 'yes' : 'no' %>">
+          <span class="mark"><%= feature.present ? '✓' : '–' %></span>
+          <%= feature.label %>
+        </li>
+      <% }) %>
+    </ul>
+    <p class="muted small">"–" means the database has no record of this feature, not that the car definitely lacks it.</p>
+  </section>
+
+  <p>
+    <a class="btn btn-outline" href="/models?make=<%= encodeURIComponent(vehicle.make) %>&year=<%= vehicle.modelYear %>">
+      Other <%= vehicle.make %> models from <%= vehicle.modelYear %> &rarr;
+    </a>
+  </p>
+<% } %>
+
+<%- include("partials/footer.ejs") %>

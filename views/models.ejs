@@ -1,0 +1,47 @@
+<%- include("partials/header.ejs") %>
+
+<a href="/" class="back">&larr; New search</a>
+
+<section class="results-head">
+  <h1><%= make.toUpperCase() %> &middot; <%= year %></h1>
+  <p class="muted">
+    <% if (filter) { %>
+      Showing <strong><%= models.length %></strong> of <%= totalFound %> models containing "<%= filter %>".
+    <% } else { %>
+      <strong><%= models.length %></strong> models found, sorted A-Z.
+    <% } %>
+  </p>
+
+  <!-- Change the year without going back to the home page -->
+  <nav class="year-nav" aria-label="Change year">
+    <a class="chip" href="/models?make=<%= encodeURIComponent(make) %>&year=<%= year - 1 %>&filter=<%= encodeURIComponent(filter) %>">&larr; <%= year - 1 %></a>
+    <% if (year < new Date().getFullYear() + 1) { %>
+      <a class="chip" href="/models?make=<%= encodeURIComponent(make) %>&year=<%= year + 1 %>&filter=<%= encodeURIComponent(filter) %>"><%= year + 1 %> &rarr;</a>
+    <% } %>
+  </nav>
+</section>
+
+<% if (models.length === 0) { %>
+  <!-- "No results" state -->
+  <section class="card empty">
+    <h2>No models found</h2>
+    <% if (filter && totalFound > 0) { %>
+      <p>None of the <%= totalFound %> models contain "<%= filter %>".
+        <a href="/models?make=<%= encodeURIComponent(make) %>&year=<%= year %>">Show all models</a>.</p>
+    <% } else { %>
+      <p>The database has no models for "<%= make %>" in <%= year %>. Check the spelling of the make,
+        or <a href="/makes">browse all makes</a>.</p>
+    <% } %>
+  </section>
+<% } else { %>
+  <ul class="model-grid">
+    <% models.forEach((model) => { %>
+      <li class="model-card">
+        <span class="model-name"><%= model.name %></span>
+        <span class="muted small"><%= model.make %> &middot; ID <%= model.id %></span>
+      </li>
+    <% }) %>
+  </ul>
+<% } %>
+
+<%- include("partials/footer.ejs") %>
