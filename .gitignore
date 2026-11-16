@@ -1,0 +1,14 @@
+# Dependencies
+node_modules/
+
+# Environment variables (real values stay on my machine)
+.env
+
+# Course materials and class notes - not part of the project
+lecture-materials/
+APIs used
+
+# OS / editor files
+.DS_Store
+.vscode/
+*.log
