@@ -1,0 +1,11 @@
+<%- include("partials/header.ejs") %>
+
+<!-- Friendly error page: used by the 404 handler and the central error handler -->
+<section class="card empty error-page">
+  <p class="error-code"><%= statusCode %></p>
+  <h1><%= statusCode === 404 ? "Page not found" : "Something went wrong" %></h1>
+  <p><%= message %></p>
+  <a href="/" class="btn">Back to home</a>
+</section>
+
+<%- include("partials/footer.ejs") %>
