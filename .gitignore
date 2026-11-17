@@ -13,3 +13,6 @@ APIs used
 .vscode/
 *.log
 .claude/
+
+# Personal defense notes - not part of the submission
+DEFENSE_NOTES.md
