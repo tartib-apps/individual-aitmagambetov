@@ -9,7 +9,7 @@
   --surface: #ffffff;
   --text: #16181d;
   --muted: #5f6673;
-  --input-outline: #d3d9e6; /* soft blue-grey outline, used only for form fields */
+  --input-bg: #eef1f6; /* light blue-grey fill that shows where a form field is */
   --primary: #1f4fd8;
   --primary-dark: #173ca8;
   --primary-soft: #e8eefc;
@@ -20,7 +20,6 @@
   --error: #c0262d;
   --error-soft: #fdeaea;
   --radius: 12px;
-  --shadow: 0 1px 2px rgba(16, 24, 40, 0.06), 0 1px 3px rgba(16, 24, 40, 0.08);
 }
 
 /* ---------- Reset ---------- */
@@ -198,7 +197,6 @@ ol {
 .card {
   background: var(--surface);
   border-radius: var(--radius);
-  box-shadow: var(--shadow);
   padding: 24px;
 }
 
@@ -234,19 +232,18 @@ input {
   width: 100%;
   font: inherit;
   padding: 10px 12px;
-  border: none; /* no border - the outline below draws the field edge */
-  outline: 1px solid var(--input-outline);
-  outline-offset: -1px;
+  border: none; /* no border - the background colour shows the field */
+  outline: none;
   border-radius: 8px;
-  background: #fff;
+  background: var(--input-bg);
 }
 
+/* focused field: soft blue fill so the user sees where they are typing */
 input:focus {
-  outline: 2px solid var(--primary);
+  background: var(--primary-soft);
 }
 
 input.input-error {
-  outline-color: var(--error);
   background: var(--error-soft);
 }
 
