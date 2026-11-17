@@ -9,7 +9,7 @@
   --surface: #ffffff;
   --text: #16181d;
   --muted: #5f6673;
-  --border: #e2e5ea;
+  --input-outline: #d3d9e6; /* soft blue-grey outline, used only for form fields */
   --primary: #1f4fd8;
   --primary-dark: #173ca8;
   --primary-soft: #e8eefc;
@@ -94,7 +94,6 @@ ol {
 /* ---------- Header & footer ---------- */
 .site-header {
   background: var(--surface);
-  border-bottom: 1px solid var(--border);
 }
 
 .header-inner {
@@ -145,7 +144,6 @@ ol {
 }
 
 .site-footer {
-  border-top: 1px solid var(--border);
   background: var(--surface);
   color: var(--muted);
   font-size: 0.875rem;
@@ -199,7 +197,6 @@ ol {
 /* ---------- Cards ---------- */
 .card {
   background: var(--surface);
-  border: 1px solid var(--border);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
   padding: 24px;
@@ -237,18 +234,19 @@ input {
   width: 100%;
   font: inherit;
   padding: 10px 12px;
-  border: 1px solid var(--border);
+  border: none; /* no border - the outline below draws the field edge */
+  outline: 1px solid var(--input-outline);
+  outline-offset: -1px;
   border-radius: 8px;
   background: #fff;
 }
 
 input:focus {
-  outline: 2px solid var(--primary-soft);
-  border-color: var(--primary);
+  outline: 2px solid var(--primary);
 }
 
 input.input-error {
-  border-color: var(--error);
+  outline-color: var(--error);
   background: var(--error-soft);
 }
 
@@ -293,13 +291,13 @@ input.input-error {
 }
 
 .btn-outline {
-  background: transparent;
+  background: var(--primary-soft);
   color: var(--primary);
-  border: 1px solid var(--primary);
 }
 
 .btn-outline:hover {
-  background: var(--primary-soft);
+  background: var(--primary);
+  color: #fff;
 }
 
 /* ---------- Chips & badges ---------- */
@@ -316,7 +314,6 @@ input.input-error {
   display: inline-block;
   padding: 4px 12px;
   border-radius: 999px;
-  border: 1px solid var(--border);
   background: var(--bg);
   color: var(--text);
   text-decoration: none;
@@ -324,8 +321,17 @@ input.input-error {
 }
 
 .chip:hover {
-  border-color: var(--primary);
+  background: var(--primary-soft);
   color: var(--primary);
+}
+
+/* chips on the grey page background need a white fill to stay visible */
+.year-nav .chip {
+  background: var(--surface);
+}
+
+.year-nav .chip:hover {
+  background: var(--primary-soft);
 }
 
 .badges {
@@ -379,7 +385,6 @@ input.input-error {
 .steps li {
   counter-increment: step;
   background: var(--surface);
-  border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 16px 16px 16px 56px;
   position: relative;
@@ -500,7 +505,6 @@ input.input-error {
 
 .model-card {
   background: var(--surface);
-  border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 14px 16px;
   display: flex;
@@ -526,13 +530,12 @@ input.input-error {
   place-items: center;
   border-radius: 8px;
   background: var(--surface);
-  border: 1px solid var(--border);
   text-decoration: none;
   font-weight: 600;
 }
 
 .letters a:hover {
-  border-color: var(--primary);
+  background: var(--primary-soft);
 }
 
 .letter-groups {
@@ -543,7 +546,6 @@ input.input-error {
 
 .letter-group {
   background: var(--surface);
-  border: 1px solid var(--border);
   border-radius: var(--radius);
   padding: 16px;
   scroll-margin-top: 16px;
